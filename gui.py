@@ -1,12 +1,14 @@
 import time
 import pygame
+import chord
+import modified_tone
 import tkinter as tk
 from tkinter import *
 from tkinter import filedialog as fd
 from tkinter import ttk
 from tkinter.messagebox import showinfo
 
-state = 1
+state = 0
 # 输入文件预处理
 # 其中和弦识别未简化版txt文档命名为in.txt 简化后的命名为in2.txt
 f = open("in.txt" , 'r', encoding='utf-8')
@@ -116,7 +118,9 @@ def OpenFile():
         initialdir="/",
         filetypes=filetypes
     )
-
+    print(var)
+    chord.chord_recognition(var)
+    modified_tone.switch_tone()
     y = var.split("/")[-1]
     z = y.split(".")[0]
     text.set(z)
@@ -231,9 +235,9 @@ def func(event):
     global state
     # text.insert('insert', cbox.get() + "\n")
     if cbox.get() == 'Original':
-       state = 1
+       state = 0
     else:
-        state = 2
+        state = 1
 
 
 
@@ -248,7 +252,7 @@ def Cartoon(flag_txt1): # 如果播放txt1 flag就为1， 播放txt2 flag就为2
     print("cartoon_state:")
     print(flag_txt1)
     print('\n')
-    if flag_txt1 == 1 :
+    if flag_txt1 == 0 :
         for i in range(0, length - 1):
 
             if musicPlayingFlag == 0:
@@ -264,7 +268,7 @@ def Cartoon(flag_txt1): # 如果播放txt1 flag就为1， 播放txt2 flag就为2
             canvas.itemconfigure((i + 1) % 2 + 1, font=("Helvetica", 40))
             root.update()
             time.sleep(0.05)
-    elif flag_txt1 == 2 :
+    elif flag_txt1 == 1 :
         for i in range(0, length1 - 1):
             if musicPlayingFlag == 0:
                 canvasRepaint()
